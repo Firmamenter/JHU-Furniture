@@ -1,0 +1,495 @@
+The API specification
+
+1. GET: /myAccount/:userId
+   Show the personal information of a user.
+   
+   Params:
+       userId: <int> the Id of the user.
+       
+   Success: 200 (Success, OK)
+
+   Response:
+       username: <String>, The username of the user.
+       email: <String>,
+       phone: <String>,
+       facebookLink: <String>,
+       address: <String>,
+       imgLink: <String> The link to an image of the user
+       img: <jpg> The image itself
+
+   Filure: 404 (Invalid user Id)
+   
+// delete the password in a UI, and replace it with a "change password botton"
+// we don't consider admin now
+
+2.  POST: /registration/email
+    verify an email address when a user creates an account.
+    
+    Body: 
+        sessionId: <String>, the device id of the user's phone
+        email: <String> The email address that the user enters
+    
+    Success: 201 (Success, email is verfied!)
+    Response:
+        emailSend: <String>, a message saying "a confirmation email has been sent!"
+    Failure: 
+        404 (Email address already exists)
+    
+3. POST: /registration/phoneSendCode
+    send verification message to the phone number when a user creates an account.
+    
+    Body: 
+        sessionId: <String>, the device id of the user's phone
+        PhoneNumber: <String> The phone number that the user enters
+        
+    Success: 201 (Success, verification code is sent!)
+
+    Response:
+         emailSend: <String>, a message saying "a security code has been sent to your phone!"
+
+    Failure: 
+        404 (Phone number already exists)
+	
+4. POST: /registration/phoneVerifyCode
+    Check the verification code typed by user.
+    
+    Body: 
+        sessionId: <String>, the device id of the user's phone
+        PhoneNumber: <String> The phone number that the user enters
+	SecurityCode: <String> The security code that the user enters
+	  
+    Success: 201 (Success, phone is verfied!)
+
+    Response:
+         verified: <boolean>, true if the code entered by user matches the one in server, false otherwise
+
+    Failure: 
+         404 (fail to verify)
+	
+        
+5. POST: /JHUFurniture/registration/comfirmPwd
+   confirm the passwords user enters
+
+   Body: 
+        sessionId: <String>, the device id of the user's phone
+        password: <String>, The password that the user enters
+   
+   Success: 201 (Success, OK)
+   Failure: 
+        450 (no corresponding username)
+   
+6. PUT: /login
+   Sign in an account.
+
+   Body:
+       email: <String>, the email of the account to sign in
+       password: <String>, the password of the accoun to sign in 
+   Success: 200 (Success, OK)
+   
+   Response: 
+       sessionId: <String>, the sessionId of the user
+   Failure:
+       404 (Invalid username)
+       410 (username and password don't match)
+       
+7. PUT: /logout/:userId
+   Params:
+       userId: <int> the Id of the user.
+   Sign out an account.
+   Success: 200 (Success, OK) 
+   Response: 
+       isLogout: <boolean>
+   Failure:
+       451 (Fail to logout)
+       
+8. GET: /homepage
+   Display the top level categories.
+   Success: 200 (Success, OK)
+   Response:
+       topLevelCategories: [
+           name: <String>, The top-level category name.
+           imgPath: <String> The path on the disk where the images of top-level categories are stored
+       ]
+       
+9. GET: /:category1/subCategory
+   Display the sub-level categories of a top-level category.
+   Params:
+        category1: <String>, the name of the top-level category
+        
+   Success: 200 (Success, OK)
+   Response:
+       subLevelCategories: [
+           name: <String>, The sub-level category name.
+           imgPath: <String> The path on the disk where the images of sub-level categories are stored
+       ]
+   Failure:
+       404: (Invalid top-level category)
+       
+10. GET: /subCategory/:category2
+   Display the items in that sub-level category.
+   Params:
+        category2: <String>, the name of the sub-level category
+   Body:
+        sessionId: <String>, the sessionId of the current user
+
+   Success: 200 (Success, OK)
+   Response:
+       itemShortcut: [
+           name: <String>, the name of the item
+           price: <float>, the price of an item
+           itemImgPath: <String>, the path on the disk where the item's image is stored
+           isDeliver: <boolean>, true if deliver, false otherwise
+           sellerImgPath: <String>, the path on the disk where the seller's image is stored
+           distance: <float>, distance between the item's location and user's current location
+           isLiked: <boolean>, true if the user has added it to wishlist, false otherwise
+       ]
+   Failure:
+       404: (Invalid sub-level category)
+
+11. GET: /item/:itemId
+   Display the detail of an item.
+
+   Params:
+        itemId: <int>, the id of the item
+   Body:
+        sessionId: <String>, the sessionId of the current user
+
+   Success: 200 (Success, OK)
+
+   Response:
+           name: <String>, the name of the item
+           description: <Srting>, full description of the item
+           price: <float>, the price of an item
+           itemImgPath: <String>, the path on the disk where the item's image is stored
+           isDeliver: <boolean>, true if deliver, false otherwise
+           sellerName: <String>, seller's username
+           expireDate: <Date>, the date when the item gets expired
+           availableDate: <Date>, the date when the item is available
+           sellerImgPath: <String>, the path on the disk where the seller's image is stored
+           distance: <float>, distance between the item's location and user's current location
+           isLiked: <boolean>, true if the user has added it to wishlist, false otherwise
+           email: <String>, seller's email
+           phone: <string>, seller's phone number
+           facebookLink: <String>, seller's facebook link
+
+   Failure:
+       404: (Invalid itemId)
+
+/******************** Yuhang's Work Here ************************/
+
+
+12. 
+POST: /MyAccount/AcountCreate
+
+create an user's account (for the first time login)
+
+Body:
+
+	{	"sessionID": <String>,   // IMEI
+		"username" : <String>,   
+		"email" : <String>,
+		"phone" : <String>,
+		"address" : <String>,
+		"city" : <String>,
+		"state" : <String>,
+		"zipcode" : <String>,
+		"facebook" : <String>,
+		"imgLink" : <String>
+	}
+
+Success:  201 （Success, created）
+
+Failure:
+
+404 (invalid userName)
+400 (Create fail: Info is not complete)
+
+// delete "password" : <String>, add another 
+
+13.
+POST: /MyAccount/AcountModify/:sessionId
+
+modify user's account
+
+Params:
+     sessionId <String>
+
+Body:
+
+	{   	
+		"email" : <String>,
+		"phone" : <String>,
+		"password" : <String>,
+		"addrss" : <String>,
+		"city" : <String>,
+		"state" : <String>,
+		"zipcode" : <String>,
+		"facebook" : <String>,
+		"imgLink" : <String>
+	}
+
+Success:  201 （Success, update）
+
+Failure:
+
+404 (invalid session id)
+400 (updat fail: Info is not complete)
+
+
+14.
+
+POST: /Category/Sub-Category/subscribeAdd/
+
+subscribe 1 type of furniture. (System can email new selling info under that category to user)  
+	
+Body:
+
+	{
+		"sessionId": <String>
+		"Category" : <String>,
+		"Sub-Category" : <String>,
+		"notifyPeriod" : <String>
+	}
+
+Success: 201 (Success, add one more subscribe)
+
+Failure:
+
+404 (Invalid sessionId)
+
+
+15. 
+POST: /Category/Sub-Category/subscribeDelete
+
+Given a user and a subscribe id, delete that subscribe.
+
+Body:
+
+	{
+		"sessionId" : <String>,
+		"subscribeId" : <int>,
+		"Category" : <String>,
+		"Sub-Category" : <String>,
+	}
+
+Success: 201 (Success, add one more subscribe)
+
+Failure:
+
+404 (Invalid userName)
+
+
+16.
+GET: /Category/Sub-Category/itemList/
+
+Display the distance between user's current location and an item.
+
+Body:
+	{
+		"sessionId" : <String>
+		"Category" : <String>,
+		"Sub-category" : <String>,
+		"latitude": <String>,
+		"longtitude" : <String>
+	}
+
+Response:
+	result: [
+		   itemId: <int>,
+		   distanctToUser: <float>
+		]
+	
+
+Failure:
+
+404 (request item has no valid location)
+
+
+/***********************************************************************************/
+
+POST: /Items
+
+Post an item.
+
+Params:
+     sessionId: <String>, the ID of the User.
+
+Body:
+     topLevel: <String>, the category the item belongs to.
+     secondLevel: <String>, the subcategory the item belongs to.
+     name: <String>, the name of the item.
+     price: <double>, the price of the item.
+     //imgPath: <String>, the path to the img.
+     condition: <String>, the condition of the posted item.
+     ifDeliver: <boolean>, whether can be delivered by seller.
+     pickUpAddress: <String>, the address for buyer to pick up the item.
+     desciption: <String>, seller's desciption to the item.
+     postDate: <Date>, the item's post date.
+     avialableFrom: <Date>, the beginning date the item will be available.
+     avialableUntil: <Date>, the unavalable date for the item.
+     contactMethods: <ArrayList<String>>, the methods the seller want to be contacted.
+
+Success: 201 (Success, created)
+
+Response:
+     itemId: <String>, the ID for the item.
+
+Failure:
+     460 (Item can not be found!)
+     461 (user not found!)
+
+/***********************************************************************************/
+
+POST: /Items/:itemId
+
+Edit a posted item.
+
+Params:
+	 itemId: <int>, the ID of the Item.
+
+Body:
+     sessionId: <String>, the name of the seller.
+     topLevel: <String>, the category the item belongs to.
+     secondLevel: <String>, the subcategory the item belongs to.
+     name: <String>, the name of the item.
+     price: <double>, the price of the item.
+     imgPath: <String>, the path to the img.
+     condition: <String>, the condition of the posted item.
+     ifDeliver: <boolean>, whether can be delivered by seller.
+     pickUpAddress: <String>, the address for buyer to pick up the item.
+     desciption: <String>, seller's desciption to the item.
+     postDate: <Date>, the item's post date.
+     avialableFrom: <Date>, the beginning date the item will be available.
+     avialableUntil: <Date>, the unavalable date for the item.
+     contactMethods: <ArrayList<String>>, the methods the seller want to be contacted.
+
+Success: 201 (Success, edited)
+
+Failure:
+     462 (Invaild itemId)
+     463 (Item can not be edited!)
+
+/***********************************************************************************/
+
+POST: /WishList/add/:sessionId
+
+Add an item to a wishlist.
+
+Params:
+	 sessionId: <String>, the ID of the User.
+
+Body:
+     itemId: <String>, the ID for the item.
+
+Success: 201 (Success, edited)
+
+Failure:
+	 464 (Item can not be wishlisted!)
+
+/***********************************************************************************/
+
+POST: /WishList/delete/:sessionId
+
+Delete an item from a wishlist.
+
+Params:
+	 sessionId: <String>, the ID of the User.
+
+Body:
+     itemId: <String>, the ID for the item.
+
+Success: 201 (Success, edited)
+
+Failure:
+	 465 (Item can not be deleted!)
+
+/***********************************************************************************/
+
+POST: /SellList/add/:sessionId
+
+Add an item to user's selllist.
+
+Params:
+	 sessionId: <String>, the ID of the User.
+
+Body:
+     itemId: <String>, the ID for the item.
+
+Success: 201 (Success, edited)
+
+Failure:
+	 466 (Item can not be listed in selllist!)
+
+/***********************************************************************************/
+
+POST: /SellList/delete/:sessionId
+
+Delete an item from user's selllist.
+
+Params:
+	 sessionId: <String>, the ID of the User.
+
+Body:
+     itemId: <String>, the ID for the item.
+
+Success: 201 (Success, edited)
+
+Failure:
+	 465 (Item can not be deleted!)
+
+/--------------------------------------------------------------------------/
+
+GET: /getSellingList/:sessionId
+
+	Get the selling list of the user.
+
+Params:
+
+	sessionId: <String> The ID of the user to get information from.
+
+Success: 200 (Success, OK)
+
+Response:
+	{
+		"sellingList": [{
+			"name": "Balck Bed",
+			"type": "Delivery",
+			"itemId": "<Item Id>",
+			"price": "<Price>",
+			"distance": "<Distance>",
+			"sellerId": "<seller Id>"
+		}, {
+			"name": "Balck Bed",
+			"type": "Delivery",
+			"itemId": "<Item Id>",
+			"price": "<Price>",
+			"distance": "<Distance>",
+			"sellerId": "<seller Id>"
+		} ...]
+	}
+	
+-----------------------------------------------------------------------
+
+GET: /getWishList/:sessionId
+
+	Get the wish list of the user.
+
+Params:
+
+	sessionId: <String> The ID of the user to get information from.
+
+Success: 200 (Success, OK)
+
+Response:
+	{
+		"wishList": [{
+			"name": "<Item Type>"
+			"item" : [ <Item Details> ]
+		}, {
+			"name": "<Item Type>"
+			"item" : [ <Item Details> ]
+		} ...]
+	}
+	
+
+
