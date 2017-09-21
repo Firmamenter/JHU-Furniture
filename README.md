@@ -1,12 +1,12 @@
 # OOSE Project
 
-## Team Info##
+## Team Info
 Yuhang Wang, Beinan Wang, Da Chen, Xiaoxiao Liu, Mengdan Zhang
 
-## Overview##
+## Overview
 Our goal is to develop an used item trading app for the Johns Hopkins community.Allowing the users to find the desired items for the best price in a fast and convenient fashion will be our first priority, In addition, making the app a secure platform will also be our focus. Email and text verifications are required for successful registration. Thus, making sure sellers and buyers using the app are real. Besides the core functionality, extended features such as recommending items based on user's history will be added if we are ahead of our schedule.
 
-## Feature List##
+## Feature List
 * A user shall be either in user mode or guest mode.
 * Once the app is opened, the default mode for users is guest mode.
 * A user shall be able to change mode between guest mode and user mode at anytime when he/she uses our app by logging in and logging out.
@@ -44,7 +44,7 @@ Our goal is to develop an used item trading app for the Johns Hopkins community.
 * [Optional] In user mode, a user shall be able to see his/her view history. 
 * [Optional] Our app shall be able to recommend items to users via recommendation algorithm.
 
-## UI Sketches ##
+## UI Sketches
 
 [Complete UI Design](./Project_Doc/UI.md)
 
@@ -59,7 +59,7 @@ Example:
 	![](./Project_Doc/img/UI_Design_v2/10.png)
 
 
-## Classes UML ##
+## Classes UML
 
 ### UML
 ![](./Project_Doc/img/Server_Design/ClassUML.png)
@@ -144,7 +144,7 @@ In summary, we decide to use sparkJava as the Java web framework, MySQL for the 
 - Facebook API
 - Weka (recommendation system)
 
-## Database Design ##
+## Database Design
 
 ### E-R Model
 
@@ -299,9 +299,9 @@ Our work include both **Client-Side** and **Server-Side** based on Model-View-Co
 + manage database.
 
 
-## Test Cases ##
+## Test Cases 
 
-### Test Coverage ###
+### Test Coverage
 
 |Package|	Class, %|	Method, %|	Line, %|
 | -------------|:--------:| -----:|--------------:|
